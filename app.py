@@ -12,8 +12,17 @@ from langchain_core.runnables import RunnableParallel, RunnablePassthrough, Runn
 from langchain_core.output_parsers import StrOutputParser
 
 # ---------------- LOAD ENV ----------------
-load_dotenv()
-os.environ["GOOGLE_API_KEY"] = os.getenv("GOOGLE_API_KEY", "")
+import streamlit as st
+
+# Works on both local (.env) and Streamlit Cloud (secrets)
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    pass
+
+GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY") or st.secrets.get("GOOGLE_API_KEY", "")
+os.environ["GOOGLE_API_KEY"] = GOOGLE_API_KEY
 
 # ---------------- PAGE CONFIG ----------------
 st.set_page_config(
